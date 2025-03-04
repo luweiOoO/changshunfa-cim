@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cim.order.mapper.OrderProductDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cim.order.domain.OrderProductDetail">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="order_id" property="orderId" />
+        <result column="product_code" property="productCode" />
+        <result column="product_name" property="productName" />
+        <result column="hair_quality" property="hairQuality" />
+        <result column="hair_straight" property="hairStraight" />
+        <result column="hair_ranges" property="hairRanges" />
+        <result column="hair_length" property="hairLength" />
+        <result column="hair_weight" property="hairWeight" />
+        <result column="hair_colour" property="hairColour" />
+        <result column="hair_number" property="hairNumber" />
+        <result column="unit_price" property="unitPrice" />
+        <result column="total_price" property="totalPrice" />
+    </resultMap>
+    
+    <resultMap id="PageResultMap" type="com.cim.order.domain.vo.OrderDetailPageRes">
+        <id column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="factory_order_no" property="factoryOrderNo"/>
+        <result column="product_code" property="productCode"/>
+        <result column="product_name" property="productName"/>
+        <result column="hair_quality" property="hairQuality"/>
+        <result column="hair_straight" property="hairStraight"/>
+        <result column="hair_ranges" property="hairRanges"/>
+        <result column="hair_length" property="hairLength"/>
+        <result column="hair_weight" property="hairWeight"/>
+        <result column="hair_colour" property="hairColour"/>
+        <result column="hair_number" property="hairNumber"/>
+        <result column="unit_price" property="unitPrice"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="procedure_id" property="procedureId"/>
+        <result column="procedure_order" property="procedureOrder"/>
+        <result column="procedure_name" property="procedureName"/>
+        <result column="status" property="procedureStatus"/>
+    </resultMap>
+
+
+    <select id="selectOrderProductDetailList" resultMap="BaseResultMap">
+        SELECT * FROM order_product_detail
+        <where>
+            <if test="id != null">AND id = #{id}</if>
+            <if test="orderId != null">AND order_id = #{orderId}</if>
+            <if test="productCode != null">AND product_code LIKE CONCAT('%', #{productCode}, '%')</if>
+            <if test="productName != null">AND product_name LIKE CONCAT('%', #{productName}, '%')</if>
+            <if test="hairQuality != null">AND hair_quality = #{hairQuality}</if>
+            <if test="hairStraight != null">AND hair_straight = #{hairStraight}</if>
+            <if test="hairRanges != null">AND hair_ranges = #{hairRanges}</if>
+            <if test="hairLength != null">AND hair_length = #{hairLength}</if>
+            <if test="hairWeight != null">AND hair_weight = #{hairWeight}</if>
+            <if test="hairColour != null">AND hair_colour = #{hairColour}</if>
+            <if test="hairNumber != null">AND hair_number = #{hairNumber}</if>
+            <if test="unitPrice != null">AND unit_price = #{unitPrice}</if>
+            <if test="totalPrice != null">AND total_price = #{totalPrice}</if>
+        </where>
+    </select>
+
+    <insert id="insertOrderProductDetailBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO order_product_detail (create_time, order_id, product_code, product_name, hair_quality, hair_straight, hair_ranges, hair_length, hair_weight, hair_colour, hair_number, unit_price, total_price)
+        VALUES
+        <foreach collection="orderProductDetailList" item="item" separator=",">
+            (#{item.createTime}, #{item.orderId}, #{item.productCode}, #{item.productName}, #{item.hairQuality}, #{item.hairStraight}, #{item.hairRanges}, #{item.hairLength}, #{item.hairWeight}, #{item.hairColour}, #{item.hairNumber}, #{item.unitPrice}, #{item.totalPrice})
+        </foreach>
+    </insert>
+
+    <update id="updateOrderProductDetailBatch">
+        UPDATE order_product_detail
+        SET
+        update_time = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.updateTime}
+        </foreach>
+        ELSE update_time
+        END,
+        product_code = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.productCode}
+        </foreach>
+        ELSE product_code
+        END,
+        product_name = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.productName}
+        </foreach>
+        ELSE product_name
+        END,
+        hair_quality = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.hairQuality}
+        </foreach>
+        ELSE hair_quality
+        END,
+        hair_straight = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.hairStraight}
+        </foreach>
+        ELSE hair_straight
+        END,
+        hair_ranges = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.hairRanges}
+        </foreach>
+        ELSE hair_ranges
+        END,
+        hair_length = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.hairLength}
+        </foreach>
+        ELSE hair_length
+        END,
+        hair_weight = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.hairWeight}
+        </foreach>
+        ELSE hair_weight
+        END,
+        hair_colour = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.hairColour}
+        </foreach>
+        ELSE hair_colour
+        END,
+        hair_number = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.hairNumber}
+        </foreach>
+        ELSE hair_number
+        END,
+        unit_price = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.unitPrice}
+        </foreach>
+        ELSE unit_price
+        END,
+        total_price = CASE id
+        <foreach collection="orderProductDetailList" item="item">
+            WHEN #{item.id} THEN #{item.totalPrice}
+        </foreach>
+        ELSE total_price
+        END
+        WHERE id IN
+        <foreach collection="orderProductDetailList" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+    
+    <select id="detailPage" parameterType="com.cim.order.domain.vo.OrderDetailPageReq" resultMap="PageResultMap">
+        SELECT tmp.id,any_value(tmp.order_id) as order_id,any_value(tmp.factory_order_no) as factory_order_no,
+        any_value(tmp.product_code) as product_code,any_value(tmp.product_name) as product_name,any_value(tmp.hair_quality) as hair_quality,
+        any_value(tmp.hair_straight) as hair_straight,any_value(tmp.hair_ranges) as hair_ranges,any_value(tmp.hair_length) as hair_length,
+        any_value(tmp.hair_weight) as hair_weight,any_value(tmp.hair_colour) as hair_colour,
+        any_value(tmp.hair_number) as hair_number,any_value(tmp.unit_price) as unit_price,any_value(tmp.total_price) as total_price,
+        any_value(tmp.procedure_id) as procedure_id,any_value(tmp.procedure_order) as procedure_order,any_value(tmp.procedure_name) as procedure_name,
+        any_value(tmp.status) as status,any_value(tmp.update_time) as update_time
+        FROM
+        (SELECT
+        d.id,d.order_id,i.factory_order_no,d.product_code,d.product_name,d.hair_quality,d.hair_straight,
+        d.hair_ranges,d.hair_length,d.hair_weight,d.hair_colour,d.hair_number,d.unit_price,d.total_price,
+        r.procedure_id,r.procedure_order,r.procedure_name,r.status,r.update_time
+        FROM order_product_detail AS d
+        LEFT JOIN order_item AS i ON d.order_id = i.id
+        LEFT JOIN order_procedure_record AS r ON d.id = r.order_detail_id
+        <where>
+            <if test="param2.factoryOrderNo != null and param2.factoryOrderNo != ''">
+                i.factory_order_no like concat('%',#{param2.factoryOrderNo},'%')
+            </if>
+            <if test="param2.procedureId != null">
+                AND r.procedure_id = #{param2.procedureId}
+            </if>
+        </where>
+        ORDER BY r.update_time DESC LIMIT 1000) tmp
+        GROUP BY tmp.id
+    </select>
+
+
+    <!-- 插入一条记录 -->
+    <insert id="insertOrderProductDetail" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO order_product_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="productCode != null">product_code,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="hairQuality != null">hair_quality,</if>
+            <if test="hairStraight != null">hair_straight,</if>
+            <if test="hairRanges != null">hair_ranges,</if>
+            <if test="hairLength != null">hair_length,</if>
+            <if test="hairWeight != null">hair_weight,</if>
+            <if test="hairColour != null">hair_colour,</if>
+            <if test="hairNumber != null">hair_number,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="totalPrice != null">total_price,</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="productCode != null">#{productCode},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="hairQuality != null">#{hairQuality},</if>
+            <if test="hairStraight != null">#{hairStraight},</if>
+            <if test="hairRanges != null">#{hairRanges},</if>
+            <if test="hairLength != null">#{hairLength},</if>
+            <if test="hairWeight != null">#{hairWeight},</if>
+            <if test="hairColour != null">#{hairColour},</if>
+            <if test="hairNumber != null">#{hairNumber},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="totalPrice != null">#{totalPrice},</if>
+        </trim>
+    </insert>
+
+    <!-- 根据 ID 删除一条记录 -->
+    <delete id="deleteById">
+        DELETE FROM order_product_detail WHERE id = #{id}
+    </delete>
+
+    <!-- 根据 ID 删除一条记录 -->
+    <delete id="deleteByIdBatch">
+        DELETE FROM order_product_detail
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 更新一条记录 -->
+    <update id="updateOrderProductDetail">
+        UPDATE order_product_detail
+        <set>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="productCode != null">product_code = #{productCode},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="hairQuality != null">hair_quality = #{hairQuality},</if>
+            <if test="hairStraight != null">hair_straight = #{hairStraight},</if>
+            <if test="hairRanges != null">hair_ranges = #{hairRanges},</if>
+            <if test="hairLength != null">hair_length = #{hairLength},</if>
+            <if test="hairWeight != null">hair_weight = #{hairWeight},</if>
+            <if test="hairColour != null">hair_colour = #{hairColour},</if>
+            <if test="hairNumber != null">hair_number = #{hairNumber},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="totalPrice != null">total_price = #{totalPrice},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据 ID 查询一条记录 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM order_product_detail WHERE id = #{id}
+    </select>
+
+    <select id="getProductListByOrderNo" resultMap="BaseResultMap">
+        SELECT d.* FROM order_product_detail d
+        LEFT JOIN order_item i ON d.order_id = i.id
+        WHERE i.factory_order_no = #{factoryOrderNo}
+    </select>
+
+    <delete id="delOrderProductDetailByOrderIdList">
+        DELETE FROM order_product_detail
+        WHERE order_id IN
+        <foreach collection="orderIdList" item="orderId" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+</mapper>

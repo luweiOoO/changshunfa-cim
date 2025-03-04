@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cim.procedure.mapper.ProcedureItemMapper">
+    
+    <resultMap type="ProcedureItem" id="ProcedureItemResult">
+        <result property="id"    column="id"    />
+        <result property="procedureCode"    column="procedure_code"    />
+        <result property="procedureName"    column="procedure_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectProcedureItemVo">
+        select id, procedure_code, procedure_name, create_time, update_time, del_flag from procedure_item
+    </sql>
+
+    <select id="selectProcedureItemList" parameterType="ProcedureItem" resultMap="ProcedureItemResult">
+        <include refid="selectProcedureItemVo"/>
+        <where>  
+            <if test="procedureCode != null  and procedureCode != ''"> and procedure_code = #{procedureCode}</if>
+            <if test="procedureName != null  and procedureName != ''"> and procedure_name like concat('%', #{procedureName}, '%')</if>
+            <if test="delFlag != null "> and del_flag = #{delFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectProcedureItemById" parameterType="Long" resultMap="ProcedureItemResult">
+        <include refid="selectProcedureItemVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertProcedureItem" parameterType="ProcedureItem" useGeneratedKeys="true" keyProperty="id">
+        insert into procedure_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="procedureCode != null and procedureCode != ''">procedure_code,</if>
+            <if test="procedureName != null and procedureName != ''">procedure_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="procedureCode != null and procedureCode != ''">#{procedureCode},</if>
+            <if test="procedureName != null and procedureName != ''">#{procedureName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProcedureItem" parameterType="ProcedureItem">
+        update procedure_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="procedureCode != null and procedureCode != ''">procedure_code = #{procedureCode},</if>
+            <if test="procedureName != null and procedureName != ''">procedure_name = #{procedureName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProcedureItemById" parameterType="Long">
+        delete from procedure_item where id = #{id}
+    </delete>
+
+    <delete id="deleteProcedureItemByIds" parameterType="String">
+        delete from procedure_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="getProduceItemListByProductCode" resultType="map">
+        SELECT
+        p.product_code AS productCode,
+        p.product_name AS productName,
+        JSON_ARRAYAGG(
+        JSON_OBJECT(
+        'procedureCode', pi.procedure_code,
+        'procedureName', pi.procedure_name,
+        'orderNum', pr.order_num
+        ) ORDER BY pr.order_num ASC
+        ) AS procedureList
+        FROM
+        product_info p
+        JOIN
+        product_procedure_relate pr
+        ON p.product_code = pr.product_code
+        JOIN
+        procedure_info pi
+        ON pr.procedure_code = pi.procedure_code
+        WHERE
+        p.product_code IN
+        <foreach collection="productCodes" item="code" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+        GROUP BY
+        p.product_code, p.product_name;
+    </select>
+</mapper>

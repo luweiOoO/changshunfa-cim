@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cim.product.mapper.ProductProcedureRelateMapper">
+    
+    <resultMap type="ProductProcedureRelate" id="ProductProcedureRelateResult">
+        <result property="id"    column="id"    />
+        <result property="productCode"    column="product_code"    />
+        <result property="procedureCode"    column="procedure_code"    />
+        <result property="orderNum"    column="order_num"    />
+    </resultMap>
+
+    <sql id="selectProductProcedureRelateVo">
+        select id, product_code, procedure_code, order_num from product_procedure_relate
+    </sql>
+
+    <select id="selectProductProcedureRelateList" parameterType="ProductProcedureRelate" resultMap="ProductProcedureRelateResult">
+        <include refid="selectProductProcedureRelateVo"/>
+        <where>  
+            <if test="productCode != null  and productCode != ''"> and product_code = #{productCode}</if>
+            <if test="procedureCode != null  and procedureCode != ''"> and procedure_code = #{procedureCode}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductProcedureRelateById" parameterType="Long" resultMap="ProductProcedureRelateResult">
+        <include refid="selectProductProcedureRelateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertProductProcedureRelate" parameterType="ProductProcedureRelate">
+        insert into product_procedure_relate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="productCode != null and productCode != ''">product_code,</if>
+            <if test="procedureCode != null and procedureCode != ''">procedure_code,</if>
+            <if test="orderNum != null">order_num,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="productCode != null and productCode != ''">#{productCode},</if>
+            <if test="procedureCode != null and procedureCode != ''">#{procedureCode},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductProcedureRelate" parameterType="ProductProcedureRelate">
+        update product_procedure_relate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productCode != null and productCode != ''">product_code = #{productCode},</if>
+            <if test="procedureCode != null and procedureCode != ''">procedure_code = #{procedureCode},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductProcedureRelateById" parameterType="Long">
+        delete from product_procedure_relate where id = #{id}
+    </delete>
+
+    <delete id="deleteProductProcedureRelateByIds" parameterType="String">
+        delete from product_procedure_relate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cim.order.mapper.OrderItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cim.order.domain.OrderItem">
+        <id column="id" property="id" />
+        <result column="factory_order_no" property="factoryOrderNo" />
+        <result column="order_no" property="orderNo" />
+        <result column="order_time" property="orderTime" />
+        <result column="plan_finish_time" property="planFinishTime" />
+        <result column="real_finish_time" property="realFinishTime" />
+        <result column="sale_person" property="salePerson"/>
+        <result column="order_progress" property="orderProgress"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="create_time" property="createTime" />
+        <result column="create_by" property="createBy"/>
+        <result column="update_time" property="updateTime" />
+        <result column="update_by" property="updateBy"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <select id="selectOrderItemList" parameterType="com.cim.order.domain.OrderItem" resultMap="BaseResultMap">
+        SELECT * FROM order_item
+        <where>
+            <if test="factoryOrderNo != null and factoryOrderNo != ''">
+                factory_order_no like concat('%',#{factoryOrderNo},'%')
+            </if>
+            <if test="orderStartTime != null">
+                AND order_time &gt;= #{orderStartTime}
+            </if>
+            <if test="orderEndTime != null">
+                AND order_time &lt;= #{orderEndTime}
+            </if>
+            <if test="planFinishStartTime != null">
+                AND plan_finish_time &gt;= #{planFinishStartTime}
+            </if>
+            <if test="planFinishEndTime != null">
+                AND plan_finish_time &lt;= #{planFinishEndTime}
+            </if>
+            <if test="realFinishStartTime != null">
+                AND real_finish_time &gt;= #{realFinishStartTime}
+            </if>
+            <if test="realFinishEndTime != null">
+                AND real_finish_time &lt;= #{realFinishEndTime}
+            </if>
+            <if test="salePerson != null and salePerson != ''">
+                AND sale_person like concat('%',#{salePerson},'%')
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                AND order_status = #{orderStatus}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectOrderItemById" parameterType="long" resultMap="BaseResultMap">
+        SELECT * FROM order_item
+        WHERE id = #{orderId}
+    </select>
+
+    <insert id="insertOrderItem" parameterType="com.cim.order.domain.OrderItem" useGeneratedKeys="true" keyProperty="id">
+        insert into order_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="factoryOrderNo != null">factory_order_no,</if>
+            <if test="orderTime != null">order_time,</if>
+            <if test="planFinishTime != null">plan_finish_time,</if>
+            <if test="realFinishTime != null">real_finish_time,</if>
+            <if test="orderProgress != null">order_progress,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="salePerson != null">sale_person,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="factoryOrderNo != null">#{factoryOrderNo},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="planFinishTime != null">#{planFinishTime},</if>
+            <if test="realFinishTime != null">#{realFinishTime},</if>
+            <if test="orderProgress != null">#{orderProgress},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="salePerson != null">#{salePerson},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <insert id="insertOrderItemBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO order_item (factory_order_no, order_no, order_time, plan_finish_time, real_finish_time, order_progress, order_status, sale_person, create_time, create_by, del_flag, remark)
+        VALUES
+        <foreach collection="orderItemList" item="item" separator=",">
+            (
+            #{item.factoryOrderNo}, #{item.orderNo}, #{item.orderTime}, #{item.planFinishTime}, #{item.realFinishTime}, #{item.orderProgress}, #{item.orderStatus}, #{item.salePerson}, #{item.createTime}, #{item.createBy}, #{item.delFlag}, #{item.remark}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateOrderItem">
+        UPDATE order_item
+        <set>
+            <if test="factoryOrderNo != null">factory_order_no = #{factoryOrderNo},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="planFinishTime != null">plan_finish_time = #{planFinishTime},</if>
+            <if test="realFinishTime != null">real_finish_time = #{realFinishTime},</if>
+            <if test="orderProgress != null">order_progress = #{orderProgress},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="salePerson != null">sale_person = #{salePerson},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateOrderItemBatch">
+        <foreach collection="orderItemList" item="item" separator=";">
+            UPDATE order_item
+            <set>
+                <if test="item.factoryOrderNo != null">factory_order_no = #{item.factoryOrderNo},</if>
+                <if test="item.orderNo != null">order_no = #{item.orderNo},</if>
+                <if test="item.orderTime != null">order_time = #{item.orderTime},</if>
+                <if test="item.planFinishTime != null">plan_finish_time = #{item.planFinishTime},</if>
+                <if test="item.realFinishTime != null">real_finish_time = #{item.realFinishTime},</if>
+                <if test="item.orderProgress != null">order_progress = #{item.orderProgress},</if>
+                <if test="item.orderStatus != null">order_status = #{item.orderStatus},</if>
+                <if test="item.salePerson != null">sale_person = #{item.salePerson},</if>
+                <if test="item.createTime != null">create_time = #{item.createTime},</if>
+                <if test="item.createBy != null">create_by = #{item.createBy},</if>
+                <if test="item.updateTime != null">update_time = #{item.updateTime},</if>
+                <if test="item.updateBy != null">update_by = #{item.updateBy},</if>
+                <if test="item.delFlag != null">del_flag = #{item.delFlag},</if>
+                <if test="item.remark != null">remark = #{item.remark},</if>
+            </set>
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+
+    <delete id="deleteById">
+    DELETE FROM order_item WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByIdList">
+    DELETE FROM order_item
+    WHERE id IN
+        <foreach collection="idList" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="countByFactoryOrderNo" resultType="integer">
+        SELECT COUNT(1) FROM order_item
+        WHERE factory_no = #{factoryNo} AND id != #{id};
+    </select>
+</mapper>

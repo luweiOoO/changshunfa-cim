@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-    <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi</artifactId>
+    <groupId>com.cim</groupId>
+    <artifactId>cim</artifactId>
     <version>3.8.7</version>
 
-    <name>ruoyi</name>
+    <name>cim</name>
     <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <description>常顺发生产管理系统</description>
     
     <properties>
-        <ruoyi.version>3.8.7</ruoyi.version>
+        <cim.version>3.8.7</cim.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -30,6 +30,7 @@
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
         <jwt.version>0.9.1</jwt.version>
+        <aliyun-sdk-oss.version>3.15.1</aliyun-sdk-oss.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -139,49 +140,81 @@
 
             <!-- 定时任务-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-quartz</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.cim</groupId>
+                <artifactId>cim-quartz</artifactId>
+                <version>${cim.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.cim</groupId>
+                <artifactId>cim-generator</artifactId>
+                <version>${cim.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-framework</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.cim</groupId>
+                <artifactId>cim-framework</artifactId>
+                <version>${cim.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-system</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.cim</groupId>
+                <artifactId>cim-system</artifactId>
+                <version>${cim.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common</artifactId>
-                <version>${ruoyi.version}</version>
+                <groupId>com.cim</groupId>
+                <artifactId>cim-common</artifactId>
+                <version>${cim.version}</version>
+            </dependency>
+
+            <!-- 产品管理模块 -->
+            <dependency>
+                <groupId>com.cim</groupId>
+                <artifactId>cim-product</artifactId>
+                <version>${cim.version}</version>
+            </dependency>
+
+            <!-- 订单管理模块-->
+            <dependency>
+                <groupId>com.cim</groupId>
+                <artifactId>cim-order</artifactId>
+                <version>${cim.version}</version>
+            </dependency>
+
+            <!-- 流程管理模块-->
+            <dependency>
+                <groupId>com.cim</groupId>
+                <artifactId>cim-procedure</artifactId>
+                <version>${cim.version}</version>
+            </dependency>
+
+            <!-- 微信小程序管理模块-->
+            <dependency>
+                <groupId>com.cim</groupId>
+                <artifactId>cim-wechat</artifactId>
+                <version>${cim.version}</version>
             </dependency>
 
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
-        <module>ruoyi-system</module>
-        <module>ruoyi-quartz</module>
-        <module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
+        <module>cim-admin</module>
+        <module>cim-framework</module>
+        <module>cim-system</module>
+        <module>cim-quartz</module>
+        <module>cim-generator</module>
+        <module>cim-common</module>
+        <module>cim-product</module>
+        <module>cim-order</module>
+        <module>cim-procedure</module>
+        <module>cim-wechat</module>
     </modules>
     <packaging>pom</packaging>
 
