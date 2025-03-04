@@ -130,9 +130,9 @@ xss:
 
 # oss配置
 oss:
-  accessKeyId: LTAI4GFpTn31cJGMSXpX9PFv
-  accessKeySecret: 19ObuJjCt8hqwmeFwayPE7vMqqJWvX
-  endpoint: oss-cn-beijing.aliyuncs.com
+  accessKeyId: aa
+  accessKeySecret: aa
+  endpoint: aa
   bucketName: changshunfa
   prefix: http://changshunfa.oss-cn-beijing.aliyuncs.com
   filePath: images
