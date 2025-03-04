@@ -129,10 +129,4 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 
 # oss配置
-oss:
-  accessKeyId: aa
-  accessKeySecret: aa
-  endpoint: aa
-  bucketName: changshunfa
-  prefix: http://changshunfa.oss-cn-beijing.aliyuncs.com
-  filePath: images
+
